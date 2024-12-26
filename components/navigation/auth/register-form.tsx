@@ -20,6 +20,7 @@ import Link from 'next/link';
 import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { emailRegister } from '@/server/actions/email-register';
 
 export const RegisterForm = () => {
     const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -32,6 +33,15 @@ export const RegisterForm = () => {
     });
 
     const [error, setError] = useState<string | null>('');
+
+    const { execute, status } = useAction(emailRegister, {
+        onSuccess({ data }) {
+            console.log(data);
+            if (data?.success) {
+                console.log('success');
+            }
+        },
+    });
 
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
         execute(values);
@@ -50,7 +60,7 @@ export const RegisterForm = () => {
                         <div>
                             <FormField
                                 control={form.control}
-                                name="Username"
+                                name="username"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Username</FormLabel>
@@ -58,7 +68,7 @@ export const RegisterForm = () => {
                                             <Input
                                                 {...field}
                                                 placeholder="example"
-                                                type="Username"
+                                                type="username"
                                                 autoComplete="Username"
                                             />
                                         </FormControl>

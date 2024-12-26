@@ -3,7 +3,25 @@
 import { actionClient } from '@/lib/safe-action';
 import { RegisterSchema } from '@/types/register-schema';
 import bcrypt from 'bcrypt';
+import { db } from '..';
+import { eq } from 'drizzle-orm';
+import { users } from '../schema';
 
 export const emailRegister = actionClient()
     .schema(RegisterSchema)
-    .action(async ({ parsedInput: { username, email, password } }) => {});
+    .action(async ({ parsedInput: { username, email, password } }) => {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(hashedPassword);
+        const existingUser = await db.query.users.findFirst({
+            where: eq(users.email, email),
+        });
+
+        //check if email is already in the database-- then say in use, if not register user but also send verification
+        if (existingUser) {
+            //  if(!existingUser.emailVerified){
+            //     const verificationToken =
+            //  }
+            return { error: 'Email already in use' };
+        }
+        return { success: 'whoot success' };
+    });

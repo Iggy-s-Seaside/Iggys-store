@@ -22,6 +22,20 @@
       "when": 1735179261606,
       "tag": "0002_wise_mockingbird",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1735187385567,
+      "tag": "0003_nifty_xorn",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1735187527499,
+      "tag": "0004_bouncy_warhawk",
+      "breakpoints": true
     }
   ]
 }
