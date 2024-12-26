@@ -1,9 +1,9 @@
 import { CheckCircle2 } from 'lucide-react';
 
-export const FormError = ({ message }: { message: string }) => {
+export const FormSuccess = ({ message }: { message: string }) => {
     if (!message) return null;
     return (
-        <div className="bg-teal-400 text-secondary p-3 rounded-md">
+        <div className="bg-teal-500/25 flex items-center gap-2 text-xs font-medium  text-secondary-foreground p-3 rounded-md">
             <CheckCircle2 className="w-4 h-4" />
             {message}
         </div>
