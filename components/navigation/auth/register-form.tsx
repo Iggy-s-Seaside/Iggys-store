@@ -12,20 +12,20 @@ import {
 import { AuthCard } from './auth-card';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginSchema } from '@/types/login-schema';
+import { RegisterSchema } from '@/types/register-schema';
 import * as z from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { emailSignIn } from '@/server/actions/email-signin';
 import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
-export const LoginForm = () => {
-    const form = useForm({
-        resolver: zodResolver(LoginSchema),
+export const RegisterForm = () => {
+    const form = useForm<z.infer<typeof RegisterSchema>>({
+        resolver: zodResolver(RegisterSchema),
         defaultValues: {
+            username: '',
             email: '',
             password: '',
         },
@@ -33,27 +33,40 @@ export const LoginForm = () => {
 
     const [error, setError] = useState<string | null>('');
 
-    const { execute, status } = useAction(emailSignIn, {
-        onSuccess(data) {
-            console.log(data);
-        },
-    });
-
-    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
         execute(values);
         console.log(values);
     };
     return (
         <AuthCard
-            cardTitle="Welcome Back!"
-            backButtonHref="/auth/register"
-            backButtonLabel="Create a new account"
+            cardTitle="Create an account 🎉"
+            backButtonHref="/auth/login"
+            backButtonLabel="Already have an account?"
             showSocials
         >
             <div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <div>
+                            <FormField
+                                control={form.control}
+                                name="Username"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Username</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                placeholder="example"
+                                                type="Username"
+                                                autoComplete="Username"
+                                            />
+                                        </FormControl>
+                                        <FormDescription />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name="email"
@@ -92,9 +105,6 @@ export const LoginForm = () => {
                                     </FormItem>
                                 )}
                             />
-                            <Button size={'sm'} variant={'link'} asChild>
-                                <Link href="auth/reset">Forgot Password?</Link>
-                            </Button>
                         </div>
                         <Button
                             type="submit"
@@ -103,7 +113,7 @@ export const LoginForm = () => {
                                 status === 'executing' ? 'animate-pulse' : ''
                             )}
                         >
-                            {'Login'}
+                            {'Register'}
                         </Button>
                     </form>
                 </Form>
