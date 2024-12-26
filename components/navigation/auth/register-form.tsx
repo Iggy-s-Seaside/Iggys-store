@@ -16,7 +16,6 @@ import { RegisterSchema } from '@/types/register-schema';
 import * as z from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -116,8 +115,8 @@ export const RegisterForm = () => {
                                     </FormItem>
                                 )}
                             />
-                            <FormSuccess message={success} />
-                            <FormError message={error} />
+                            {success && <FormSuccess message={success} />}
+                            {error && <FormError message={error} />}
                         </div>
                         <Button
                             type="submit"
